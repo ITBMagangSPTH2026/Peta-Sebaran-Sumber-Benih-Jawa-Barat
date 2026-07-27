@@ -245,6 +245,26 @@
             font-size: 11px;
             color: #666;
         }
+        .navbar-peta .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .navbar-peta .brand-logos {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-peta .brand-logos img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+        .navbar-peta .brand-divider {
+            width: 1px;
+            height: 32px;
+            background-color: #e0e0e0;
+        }
         .navbar-peta .menu {
             display: flex;
             gap: 24px;
@@ -276,9 +296,17 @@
     <body>
         <!-- NAVBAR -->
         <nav class="navbar-peta">
-            <div class="brand-text">
-                <div class="title">PETA SEBARAN SUMBER BENIH JAWA BARAT</div>
-                <div class="subtitle">By Astravana Raksanovella</div>
+            <div class="brand-group">
+                <div class="brand-logos">
+                    <img src="images/logo-spth.png" alt="Logo SPTH">
+                    <img src="images/logo-itb.png" alt="Logo ITB">
+                    <img src="images/logo-angkatan.png" alt="Logo Angkatan">
+                </div>
+                <div class="brand-divider"></div>
+                <div class="brand-text">
+                    <div class="title">PETA SEBARAN SUMBER BENIH JAWA BARAT</div>
+                    <div class="subtitle">By Astravana Raksanovella</div>
+                </div>
             </div>
             <ul class="menu">
                 <li><a href="#sebaran">Sebaran</a></li>
