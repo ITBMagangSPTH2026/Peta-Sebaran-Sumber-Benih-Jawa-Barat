@@ -71,8 +71,9 @@
             margin-bottom: 16px;
         }
         .tim-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 16px;
         }
         .tim-card {
@@ -80,6 +81,8 @@
             border-radius: 10px;
             padding: 18px 12px;
             text-align: center;
+            width: calc(33.333% - 11px);
+            box-sizing: border-box;
         }
         .tim-card .nama {
             color: #14532d;
@@ -101,8 +104,43 @@
             margin-bottom: 10px;
             border: 2px solid #ffffff;
         }
+        .instansi-title {
+            text-align: center;
+            color: #eefef5;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 24px 0 14px 0;
+        }
+        .instansi-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+        }
+        .instansi-card {
+            background: #e5f5e5;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 260px;
+            box-sizing: border-box;
+        }
+        .instansi-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .instansi-card .nama-instansi {
+            color: #14532d;
+            font-weight: bold;
+            font-size: 13px;
+            margin: 0;
+        }
         @media (max-width: 700px) {
-            .tim-grid { grid-template-columns: repeat(2, 1fr); }
+            .tim-card { width: calc(50% - 8px); }
+            .instansi-card { width: calc(50% - 12px); }
+            .instansi-card img { height: 130px; }
         }
         .info-panel {
             position: absolute;
@@ -245,6 +283,26 @@
             font-size: 11px;
             color: #666;
         }
+        .navbar-peta .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .navbar-peta .brand-logos {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-peta .brand-logos img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+        .navbar-peta .brand-divider {
+            width: 1px;
+            height: 32px;
+            background-color: #e0e0e0;
+        }
         .navbar-peta .menu {
             display: flex;
             gap: 24px;
@@ -276,9 +334,17 @@
     <body>
         <!-- NAVBAR -->
         <nav class="navbar-peta">
-            <div class="brand-text">
-                <div class="title">PETA SEBARAN SUMBER BENIH JAWA BARAT</div>
-                <div class="subtitle">By Astravana Raksanovella</div>
+            <div class="brand-group">
+                <div class="brand-logos">
+                    <img src="images/logo-spth.png" alt="Logo SPTH">
+                    <img src="images/logo-itb.png" alt="Logo ITB">
+                    <img src="images/logo-angkatan.png" alt="Logo Angkatan">
+                </div>
+                <div class="brand-divider"></div>
+                <div class="brand-text">
+                    <div class="title">PETA SEBARAN SUMBER BENIH JAWA BARAT</div>
+                    <div class="subtitle">By Astravana Raksanovella</div>
+                </div>
             </div>
             <ul class="menu">
                 <li><a href="#sebaran">Sebaran</a></li>
@@ -346,6 +412,13 @@
                             <img src="images/Raihana Asyarifah.jpg" alt="Raihana Asyarifah">
                             <p class="nama">Raihana Asyarifah</p>
                             <p class="nim">11524048</p>
+                        </div>
+                    </div>
+                    <p class="instansi-title">Bekerja Sama Dengan</p>
+                    <div class="instansi-grid">
+                        <div class="instansi-card">
+                            <img src="images/logo-spth.png" alt="UPTD SPTH">
+                            <p class="nama-instansi">UPTD SPTH</p>
                         </div>
                     </div>
                 </div>
@@ -696,7 +769,7 @@
 
         var searchContainer = L.DomUtil.create('div', 'search-benih-control', map.getContainer());
         searchContainer.innerHTML =
-            '<input type="text" id="cari-spesies" list="daftar-spesies" placeholder="Cari nama spesies / benih / no sertif...">' +
+            '<input type="text" id="cari-spesies" list="daftar-spesies" placeholder="Cari nama spesies...">' +
             '<datalist id="daftar-spesies"></datalist>' +
             '<button type="button" id="btn-cari-spesies">Cari</button>' +
             '<div id="hasil-cari-kosong"></div>';
@@ -708,10 +781,6 @@
             var spesi = f.properties['Nama Spesi'];
             if (spesi && daftarSpesiesUnik.indexOf(spesi) === -1) {
                 daftarSpesiesUnik.push(spesi);
-            }
-            var noSertif = f.properties['No Sertif'];
-            if (noSertif && daftarSpesiesUnik.indexOf(noSertif) === -1) {
-                daftarSpesiesUnik.push(noSertif);
             }
         });
         var datalistEl = document.getElementById('daftar-spesies');
@@ -736,8 +805,7 @@
             layer_tiitktitiksumberbenih_2.eachLayer(function (marker) {
                 var spesi = (marker.feature.properties['Nama Spesi'] || '').toLowerCase();
                 var namaBenih = (marker.feature.properties['Nama Benih'] || '').toLowerCase();
-                var noSertif = String(marker.feature.properties['No Sertif'] || '').toLowerCase();
-                if (spesi.indexOf(keyword) !== -1 || namaBenih.indexOf(keyword) !== -1 || noSertif.indexOf(keyword) !== -1) {
+                if (spesi.indexOf(keyword) !== -1 || namaBenih.indexOf(keyword) !== -1) {
                     ditemukan.push(marker);
                 }
             });
@@ -745,7 +813,7 @@
             setTimeout(function () {
                 map.invalidateSize();
                 if (ditemukan.length === 0) {
-                    pesanKosong.textContent = 'Tidak ditemukan.';
+                    pesanKosong.textContent = 'Spesies tidak ditemukan.';
                     return;
                 }
                 if (ditemukan.length === 1) {
