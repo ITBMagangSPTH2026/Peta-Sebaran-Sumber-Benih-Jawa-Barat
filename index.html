@@ -232,6 +232,15 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+        .search-benih-control select {
+            padding: 6px 8px;
+            font-size: 13px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 6px;
+            box-sizing: border-box;
+            background: #fff;
+        }
         .search-benih-control input {
             width: 170px;
             padding: 6px 8px;
@@ -769,28 +778,50 @@
 
         var searchContainer = L.DomUtil.create('div', 'search-benih-control', map.getContainer());
         searchContainer.innerHTML =
-            '<input type="text" id="cari-spesies" list="daftar-spesies" placeholder="Cari nama spesies...">' +
+            '<select id="mode-cari">' +
+                '<option value="Nama Benih">Nama Benih</option>' +
+                '<option value="No Sertif">No Sertif</option>' +
+            '</select>' +
+            '<input type="text" id="cari-spesies" list="daftar-spesies" placeholder="Cari nama benih...">' +
             '<datalist id="daftar-spesies"></datalist>' +
             '<button type="button" id="btn-cari-spesies">Cari</button>' +
             '<div id="hasil-cari-kosong"></div>';
         L.DomEvent.disableClickPropagation(searchContainer);
         L.DomEvent.disableScrollPropagation(searchContainer);
 
-        var daftarSpesiesUnik = [];
-        json_tiitktitiksumberbenih_2.features.forEach(function (f) {
-            var spesi = f.properties['Nama Spesi'];
-            if (spesi && daftarSpesiesUnik.indexOf(spesi) === -1) {
-                daftarSpesiesUnik.push(spesi);
+        function isiDatalist(namaField) {
+            var datalistEl = document.getElementById('daftar-spesies');
+            datalistEl.innerHTML = '';
+            var nilaiUnik = [];
+            json_tiitktitiksumberbenih_2.features.forEach(function (f) {
+                var nilai = f.properties[namaField];
+                if (nilai && nilaiUnik.indexOf(nilai) === -1) {
+                    nilaiUnik.push(nilai);
+                }
+            });
+            nilaiUnik.forEach(function (nilai) {
+                var opt = document.createElement('option');
+                opt.value = nilai;
+                datalistEl.appendChild(opt);
+            });
+        }
+        isiDatalist('Nama Benih');
+
+        document.getElementById('mode-cari').addEventListener('change', function () {
+            var input = document.getElementById('cari-spesies');
+            input.value = '';
+            document.getElementById('hasil-cari-kosong').textContent = '';
+            if (this.value === 'No Sertif') {
+                input.placeholder = 'Cari no sertif...';
+                isiDatalist('No Sertif');
+            } else {
+                input.placeholder = 'Cari nama benih...';
+                isiDatalist('Nama Benih');
             }
-        });
-        var datalistEl = document.getElementById('daftar-spesies');
-        daftarSpesiesUnik.forEach(function (nama) {
-            var opt = document.createElement('option');
-            opt.value = nama;
-            datalistEl.appendChild(opt);
         });
 
         function cariBenihBySpesies() {
+            var mode = document.getElementById('mode-cari').value;
             var keyword = document.getElementById('cari-spesies').value.trim().toLowerCase();
             var pesanKosong = document.getElementById('hasil-cari-kosong');
             pesanKosong.textContent = '';
@@ -803,9 +834,8 @@
 
             var ditemukan = [];
             layer_tiitktitiksumberbenih_2.eachLayer(function (marker) {
-                var spesi = (marker.feature.properties['Nama Spesi'] || '').toLowerCase();
-                var namaBenih = (marker.feature.properties['Nama Benih'] || '').toLowerCase();
-                if (spesi.indexOf(keyword) !== -1 || namaBenih.indexOf(keyword) !== -1) {
+                var nilaiField = String(marker.feature.properties[mode] || '').toLowerCase();
+                if (nilaiField.indexOf(keyword) !== -1) {
                     ditemukan.push(marker);
                 }
             });
@@ -813,7 +843,7 @@
             setTimeout(function () {
                 map.invalidateSize();
                 if (ditemukan.length === 0) {
-                    pesanKosong.textContent = 'Spesies tidak ditemukan.';
+                    pesanKosong.textContent = 'Tidak ditemukan.';
                     return;
                 }
                 if (ditemukan.length === 1) {
