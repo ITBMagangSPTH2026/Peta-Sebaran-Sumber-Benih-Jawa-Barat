@@ -642,11 +642,11 @@
                     </tr>\
                     <tr>\
                         <th scope="row">No. Sumber Benih</th>\
-                        <td>' + (feature.properties['No. Sumber Benih'] !== null ? autolinker.link(String(feature.properties['No. Sumber Benih']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['No. SB'] !== null ? autolinker.link(String(feature.properties['No. SB']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Kelas Sumber Benih</th>\
-                        <td>' + (feature.properties['Kelas Sumber Benih'] !== null ? autolinker.link(String(feature.properties['Kelas Sumber Benih']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Kelas SB'] !== null ? autolinker.link(String(feature.properties['Kelas SB']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">No Sertif</th>\
@@ -654,7 +654,7 @@
                     </tr>\
                     <tr>\
                         <th scope="row">Jenis kepemilikan</th>\
-                        <td>' + (feature.properties['Jenis kepemilikan'] !== null ? autolinker.link(String(feature.properties['Jenis kepemilikan']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Jns kepem'] !== null ? autolinker.link(String(feature.properties['Jns kepem']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['foto benih'] !== null ? '<img src="images/' + String(feature.properties['foto benih']).replace(/[\\/:]/g, '_').trim().replace(/'/g, '\'').replace(/"/g, '&quot;') + '">' : '') + '</td>\
@@ -730,10 +730,10 @@
                 ['Longitude', properties['Longitude']],
                 ['Wilayah', properties['Wilayah']],
                 ['Luas (Ha)', properties['Luas (Ha)']],
-                ['No. Sumber Benih', properties['No. Sumber Benih']],
-                ['Kelas Sumber Benih', properties['Kelas Sumber Benih']],
+                ['No. Sumber Benih', properties['No. SB']],
+                ['Kelas Sumber Benih', properties['Kelas SB']],
                 ['No Sertif', properties['No Sertif']],
-                ['Jenis kepemilikan', properties['Jenis kepemilikan']]
+                ['Jenis kepemilikan', properties['Jns kepem']]
             ];
             var html = '';
             var teksCopy = '';
